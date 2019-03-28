@@ -10,10 +10,13 @@ package contactbook;
  * @author BEN Formation
  */
 public class MainWindow implements AdressBook {
-    
+
     /**
      *
      */
-    @Override
-    public void Afficher();
+    
+    public void Display() {
+    
+    }
+
 }

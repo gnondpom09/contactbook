@@ -11,7 +11,7 @@ package contactbook;
  */
 public interface AdressBook {
     
-    public void Afficher();
+    public void Display();
     
     
 }

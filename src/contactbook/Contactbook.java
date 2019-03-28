@@ -5,12 +5,15 @@
  */
 package contactbook;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author gnondpom
  */
 public class Contactbook {
 
+    private int id_;
     private String name;
     private String firstname;
     private Phone phone;
@@ -74,7 +77,6 @@ public class Contactbook {
         this.postadress = postadress;
     }
 
-        
     /**
      * @return the mailadress
      */
@@ -88,7 +90,7 @@ public class Contactbook {
     public void setMailAdress(MailAdress mailadress) {
         this.mailadress = mailadress;
     }
-    
+
     /**
      * @return the group
      */
@@ -102,4 +104,25 @@ public class Contactbook {
     public void setGroup(Group group) {
         this.group = group;
     }
+
+    /**
+     * @return the id_
+     */
+    public int getId_() {
+        return id_;
+    }
+
+    /**
+     * @param id_ the id_ to set
+     */
+    public void setId_(int id_) {
+        this.id_ = id_;
+    }
+
+    public Contactbook createNewContact(String name, String firstname, PostAdress postadresse, ArrayList<MailAdress> listmailadress, ArrayList<Phone> listphone) {
+        Contactbook personne = new Contactbook();
+
+        return personne;
+    }
+
 }
