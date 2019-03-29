@@ -5,7 +5,7 @@
  */
 package contactbook;
 
-import java.util.ArrayList;
+
 
 /**
  *
@@ -13,13 +13,25 @@ import java.util.ArrayList;
  */
 public class Contactbook {
 
-    private int id_;
     private String name;
     private String firstname;
     private Phone phone;
     private PostAdress postadress;
     private MailAdress mailadress;
-    private Group group;
+    private String[] group;
+
+    public Contactbook() {
+    }
+
+    public Contactbook(String pname, String pfirstname, Phone pphone, PostAdress ppostadress, MailAdress pmailadress, String[] group) {
+        name = pname;
+        firstname = pfirstname;
+        phone = pphone;
+        postadress = ppostadress;
+        mailadress = pmailadress;
+        System.out.println("constructeur contactbook");
+
+    }
 
     /**
      * @return the firstname
@@ -91,38 +103,4 @@ public class Contactbook {
         this.mailadress = mailadress;
     }
 
-    /**
-     * @return the group
-     */
-    public Group getGroup() {
-        return postadress;
-    }
-
-    /**
-     * @param group the group to set
-     */
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    /**
-     * @return the id_
-     */
-    public int getId_() {
-        return id_;
-    }
-
-    /**
-     * @param id_ the id_ to set
-     */
-    public void setId_(int id_) {
-        this.id_ = id_;
-    }
-
-    public Contactbook createNewContact(String name, String firstname, PostAdress postadresse, ArrayList<MailAdress> listmailadress, ArrayList<Phone> listphone) {
-        Contactbook personne = new Contactbook();
-
-        return personne;
-    }
-
-}
+} //fin de classe

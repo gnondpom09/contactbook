@@ -12,7 +12,12 @@ package contactbook;
 public class Phone {
     
     private String number;
-    private Category libelle;
+    private String libelle;
+    
+    public Phone (String plibelle, String pnumber) {
+    number = pnumber;
+    libelle = plibelle;
+    }
 
     /**
      * @return the number
@@ -31,14 +36,14 @@ public class Phone {
     /**
      * @return the libelle
      */
-    public Category getLibelle() {
+    public String getLibelle() {
         return libelle;
     }
 
     /**
      * @param libelle the libelle to set
      */
-    public void setLibelle(Category libelle) {
+    public void setLibelle(String libelle) {
         this.libelle = libelle;
     }
     

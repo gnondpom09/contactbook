@@ -12,7 +12,13 @@ package contactbook;
 public class MailAdress {
     
     private String adress;
-    private Category libelle;
+    private String libelle;
+    
+    public MailAdress (String plibelle, String padress) {
+    adress = padress;
+    libelle = plibelle;
+    System.out.println("constructeur MailAdress");
+    }
 
     /**
      * @return the adress
@@ -31,14 +37,14 @@ public class MailAdress {
     /**
      * @return the libelle
      */
-    public Category getLibelle() {
+    public String getLibelle() {
         return libelle;
     }
 
     /**
      * @param libelle the libelle to set
      */
-    public void setLibelle(Category libelle) {
+    public void setLibelle(String libelle) {
         this.libelle = libelle;
     }
     
