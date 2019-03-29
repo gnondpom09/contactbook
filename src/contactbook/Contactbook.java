@@ -5,6 +5,8 @@
  */
 package contactbook;
 
+import java.util.ArrayList;
+
 
 
 /**
@@ -15,20 +17,25 @@ public class Contactbook {
 
     private String name;
     private String firstname;
-    private Phone phone;
+    private ArrayList<Phone> phone;
     private PostAdress postadress;
-    private MailAdress mailadress;
-    private String[] group;
+    private ArrayList<MailAdress> mailadress;
+    private ArrayList<String> group;
 
     public Contactbook() {
     }
 
-    public Contactbook(String pname, String pfirstname, Phone pphone, PostAdress ppostadress, MailAdress pmailadress, String[] group) {
+    public Contactbook(String pname, 
+            String pfirstname, 
+            PostAdress ppostadress, 
+            ArrayList<Phone> pphoneList, 
+            ArrayList<MailAdress> pmailadressList, 
+            ArrayList<String> group) {
         name = pname;
         firstname = pfirstname;
-        phone = pphone;
+        phone = pphoneList;
         postadress = ppostadress;
-        mailadress = pmailadress;
+        mailadress = pmailadressList;
         System.out.println("constructeur contactbook");
 
     }
@@ -64,14 +71,14 @@ public class Contactbook {
     /**
      * @return the phone
      */
-    public Phone getPhone() {
+    public ArrayList<Phone> getPhone() {
         return phone;
     }
 
     /**
      * @param phone the phone to set
      */
-    public void setPhone(Phone phone) {
+    public void setPhone(ArrayList<Phone> phone) {
         this.phone = phone;
     }
 
@@ -92,14 +99,14 @@ public class Contactbook {
     /**
      * @return the mailadress
      */
-    public MailAdress getMailAdress() {
+    public ArrayList<MailAdress> getMailAdress() {
         return mailadress;
     }
 
     /**
      * @param mailadress the mailadress to set
      */
-    public void setMailAdress(MailAdress mailadress) {
+    public void setMailAdress(ArrayList<MailAdress> mailadress) {
         this.mailadress = mailadress;
     }
 
