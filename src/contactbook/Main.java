@@ -12,7 +12,12 @@ package contactbook;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Bonjour");
+        // Display window
+        MainWindow book = new MainWindow();
+        book.setTitle("test");
+        book.setVisible(true);
+        AdressBook test = new AdressBook();
+        test.getListOfGroupsFromFile("contacts.json");
 
     }
 }

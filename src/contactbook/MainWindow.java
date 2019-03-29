@@ -205,7 +205,7 @@ public class MainWindow extends JFrame {
                 // code...
             }
         });
-        JButton updateContact = new JButton();
+        JButton updateContact = new JButton("Modifier");
         updateContact.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -214,7 +214,7 @@ public class MainWindow extends JFrame {
                 contactFormPanel.setVisible(true);
                 // fill form fields with values of contact selected
                 // code...
-                // update contact and save in JSON file 
+                // update contact, update list of contacts and save in JSON file 
                 // code...
             }
         });
