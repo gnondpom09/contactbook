@@ -12,22 +12,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
+ * Window of application
  *
  * @author BEN Formation, Laurent Botella
  */
-public class MainWindow extends JFrame implements AdressBook {
+public class MainWindow extends JFrame {
 
     public JFrame frame;
     private static final long serialVersionUID = 2026580921442617098L;
@@ -41,6 +41,7 @@ public class MainWindow extends JFrame implements AdressBook {
     private final JPanel listPanel;
     public Color COLOR_WEB = Color.decode("#00FFCC");
     public Color COLOR_LIGHT = Color.lightGray;
+    private final ArrayList groupList;
     private final JTextField nameField;
     private final JTextField firstname;
     private final JTextField street;
@@ -57,9 +58,12 @@ public class MainWindow extends JFrame implements AdressBook {
     private final ArrayList categoriesList;
     private final ArrayList phoneNumbersList;
     private final ArrayList emailsList;
+    private final ArrayList groupListOfContact;
 
     /**
      * Constructor
+     *
+     * @author Laurent Botella
      */
     public MainWindow() {
         this.setTitle("Carnet d'adresses");
@@ -71,6 +75,7 @@ public class MainWindow extends JFrame implements AdressBook {
         leftPanel = new JPanel();
         contactPanel = new JPanel();
         contactFormPanel = new JPanel();
+        groupList = new ArrayList<String>();
         nameField = new JTextField();
         firstname = new JTextField();
         street = new JTextField();
@@ -83,9 +88,10 @@ public class MainWindow extends JFrame implements AdressBook {
         categoryPhoneSelected2 = "";
         email = new JTextField();
         email2 = new JTextField();
-        categoriesList = new ArrayList<Category>();
+        categoriesList = new ArrayList<String>();
         phoneNumbersList = new ArrayList<Phone>();
         emailsList = new ArrayList<MailAdress>();
+        groupListOfContact = new ArrayList<String>();
 
         contactPanel.setVisible(true);
         contactFormPanel.setVisible(false);
@@ -112,7 +118,12 @@ public class MainWindow extends JFrame implements AdressBook {
         ////////////////////////////// PART GROUPS ///////////////////////////
         //////////////////////////////////////////////////////////////////////
         JLabel lblGroup = new JLabel("Groupes");
-        JList listOfGroups = new JList(); // add instance list of groups
+        // Get names list of groups from JSON file
+        DefaultListModel groupsListModel = new DefaultListModel();
+        groupsListModel.addElement(groupList);
+        // Fill list panel with list of groups
+        JList listOfGroups = new JList(groupsListModel);
+        // Button to add new group
         JButton btnAddGroup = new JButton();
         btnAddGroup.addMouseListener(new MouseAdapter() {
             @Override
@@ -130,8 +141,7 @@ public class MainWindow extends JFrame implements AdressBook {
         //////////////////////////////////////////////////////////////////////
         JLabel lblName = new JLabel("Nom");
         JLabel lblFirstname = new JLabel("Prénom");
-        PostAdress adress = new PostAdress();
-        //adress.createAdress(street.getText(), zipCode.getText(), city.getText());
+        PostAdress adress = new PostAdress(street.getText(), zipCode.getText(), city.getText());
         JComboBox comboBoxCategoriesListPhone = new JComboBox((ComboBoxModel) categoriesList);
         comboBoxCategoriesListPhone.addActionListener(new ActionListener() {
             @Override
@@ -177,27 +187,26 @@ public class MainWindow extends JFrame implements AdressBook {
         submitNewContact.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Add new contact when submit
-                Contactbook newContact = new Contactbook();
                 // push phone numbers in the list
-//                phoneNumbersList.add(new Phone(categoryPhoneSelected, phoneNumber.getText()));
-//                phoneNumbersList.add(new Phone(categoryPhoneSelected2, phoneNumber2.getText()));
+                phoneNumbersList.add(new Phone(categoryPhoneSelected, phoneNumber.getText()));
+                phoneNumbersList.add(new Phone(categoryPhoneSelected2, phoneNumber2.getText()));
                 // Push emails in the list
-//                emailsList.add(new MailAdress(categoryEmailSelected, email.getText()));
-//                emailsList.add(new MailAdress(categoryEmailSelected2, email2.getText()));
-                // Create new contact with values
-                newContact.createNewContact(nameField.getText(),
+                emailsList.add(new MailAdress(categoryEmailSelected, email.getText()));
+                emailsList.add(new MailAdress(categoryEmailSelected2, email2.getText()));
+                // Add new contact when submit
+                Contactbook newContact = new Contactbook(nameField.getText(),
                         firstname.getText(),
                         adress,
                         emailsList,
-                        phoneNumbersList
+                        phoneNumbersList,
+                        groupListOfContact
                 );
                 // Push new contact in the list and save in JSON file
                 // code...
             }
         });
-        JButton updateNewContact = new JButton();
-        updateNewContact.addMouseListener(new MouseAdapter() {
+        JButton updateContact = new JButton();
+        updateContact.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // set update form contact to visible and hide detail panel
@@ -228,16 +237,6 @@ public class MainWindow extends JFrame implements AdressBook {
     }
 
     public void setFormNewContact() {
-
-    }
-
-    /**
-     * Display list of contacts
-     *
-     * @author Laurent Botella
-     */
-    @Override
-    public void Display() {
 
     }
 
