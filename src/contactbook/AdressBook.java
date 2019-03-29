@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.IOException;
 import org.json.simple.JSONArray;
-//import jdk.nashorn.internal.parser.JSONParser;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+//import org.codehaus.jackson.JsonGenerationException;
+//import org.codehaus.jackson.map.JsonMappingException;
+//import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  *
@@ -113,6 +115,18 @@ public class AdressBook {
      */
     public ArrayList<Contactbook> getListOfContactsFromFile(String filePath) {
 
+        try {
+            // read the json file
+            JSONParser parser = new JSONParser();
+            Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
+            JSONObject jsonObject = (JSONObject) object;
+
+            // Set collection of contacts with datas of file
+            this.setListOfContacts((ArrayList<Contactbook>) jsonObject.get("Contacts"));
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return listOfContacts;
     }
 
@@ -123,22 +137,6 @@ public class AdressBook {
      * @return
      */
     public ArrayList<String> getListOfGroupsFromFile(String filePath) {
-        System.out.println("test");
-        try {
-            // read the json file
-            JSONParser parser = new JSONParser();
-            Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
-            JSONObject jsonArray = (JSONObject) object;
-            
-            System.out.println(jsonArray);
-
-
-            File directory = new File("src/contactbook");
-            System.out.println(directory.getAbsolutePath());
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
 
         return listOfGroups;
     }

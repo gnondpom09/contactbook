@@ -5,6 +5,8 @@
  */
 package contactbook;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author BEN Formation
@@ -17,7 +19,12 @@ public class Main {
         book.setTitle("test");
         book.setVisible(true);
         AdressBook test = new AdressBook();
-        test.getListOfGroupsFromFile("contacts.json");
+        //test.getListOfContactsFromFile("contacts.json");
+        test.setListOfContacts(test.getListOfContactsFromFile("contacts.json"));
+        ArrayList<Contactbook> testList = new ArrayList<Contactbook>();
+ 
+        System.out.println("test collection");
+        System.out.println(test.getListOfContacts());
 
     }
 }
