@@ -13,9 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-//import org.codehaus.jackson.JsonGenerationException;
-//import org.codehaus.jackson.map.JsonMappingException;
-//import org.codehaus.jackson.map.ObjectMapper;
+
 
 /**
  *
@@ -23,8 +21,8 @@ import org.json.simple.parser.ParseException;
  */
 public class AdressBook {
 
-    private ArrayList<Contactbook> listOfContacts = new ArrayList<Contactbook>();
-    private ArrayList<String> listOfGroups = new ArrayList<String>();
+    public ArrayList<Contactbook> listOfContacts = new ArrayList<Contactbook>();
+    public ArrayList<String> listOfGroups = new ArrayList<String>();
 
     /**
      * Constructor
@@ -119,10 +117,20 @@ public class AdressBook {
             // read the json file
             JSONParser parser = new JSONParser();
             Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
-            JSONObject jsonObject = (JSONObject) object;
-
-            // Set collection of contacts with datas of file
-            this.setListOfContacts((ArrayList<Contactbook>) jsonObject.get("Contacts"));
+            JSONArray jsonObject = (JSONArray) object;
+            
+            for (Object user : jsonObject) {
+                // Initialize new contact
+                Contactbook contact = new Contactbook();
+                JSONObject jsonObjectUser = (JSONObject) user;
+                
+                // set properties of contact from json file
+                contact.setName((String) jsonObjectUser.get("name"));
+                contact.setFirstname((String) jsonObjectUser.get("firstname"));
+                
+                // add contact to collection
+                this.listOfContacts.add(contact);
+            }
 
         } catch (Exception e) {
             System.out.println(e);

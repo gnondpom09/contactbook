@@ -1,16 +1,224 @@
-{
-    "Contacts": [
-          {
-            "name": "Lupe"
-          },
-          {
-            "name": "Selma"
-          },
-          {
-            "name": "Irma"
-          },
-          {
-            "name": "Collins"
-          }
+[
+  {
+    "name": "Blackwell",
+    "firstname": "Williamson",
+    "phone": [
+      {
+        "libelle": "domicile",
+        "number": "(846) 584-3558"
+      },
+      {
+        "libelle": "bureau",
+        "number": "(906) 535-2736"
+      }
+    ],
+    "postadress": {
+      "street": "Charles Place",
+      "codepost": "75000",
+      "town": "Cherokee"
+    },
+    "mailadress": [
+      {
+        "libelle": "domicile",
+        "adress": "blackwellwilliamson@gluid.com"
+      },
+      {
+        "libelle": "domicile",
+        "adress": "blackwellwilliamson@gluid.com"
+      }
+    ],
+    "group": [
+      {
+        "name": "personnel"
+      },
+      {
+        "name": "domicile"
+      }
     ]
-}
+  },
+  {
+    "name": "Guadalupe",
+    "firstname": "Schroeder",
+    "phone": [
+      {
+        "libelle": "privé",
+        "number": "(890) 466-3853"
+      },
+      {
+        "libelle": "bureau",
+        "number": "(870) 461-3374"
+      }
+    ],
+    "postadress": {
+      "street": "Stuyvesant Avenue",
+      "codepost": "31000",
+      "town": "Fredericktown"
+    },
+    "mailadress": [
+      {
+        "libelle": "domicile",
+        "adress": "guadalupeschroeder@gluid.com"
+      },
+      {
+        "libelle": "personnel",
+        "adress": "guadalupeschroeder@gluid.com"
+      }
+    ],
+    "group": [
+      {
+        "name": "bureau"
+      },
+      {
+        "name": "bureau"
+      }
+    ]
+  },
+  {
+    "name": "Lucas",
+    "firstname": "Elliott",
+    "phone": [
+      {
+        "libelle": "bureau",
+        "number": "(830) 571-2151"
+      },
+      {
+        "libelle": "personnel",
+        "number": "(976) 441-3733"
+      }
+    ],
+    "postadress": {
+      "street": "Bethel Loop",
+      "codepost": "31600",
+      "town": "Springville"
+    },
+    "mailadress": [
+      {
+        "libelle": "bureau",
+        "adress": "lucaselliott@gluid.com"
+      },
+      {
+        "libelle": "privé",
+        "adress": "lucaselliott@gluid.com"
+      }
+    ],
+    "group": [
+      {
+        "name": "personnel"
+      },
+      {
+        "name": "domicile"
+      }
+    ]
+  },
+  {
+    "name": "Deann",
+    "firstname": "Underwood",
+    "phone": [
+      {
+        "libelle": "privé",
+        "number": "(829) 500-2962"
+      },
+      {
+        "libelle": "personnel",
+        "number": "(949) 484-2806"
+      }
+    ],
+    "postadress": {
+      "street": "Leonora Court",
+      "codepost": "31600",
+      "town": "Bowie"
+    },
+    "mailadress": [
+      {
+        "libelle": "privé",
+        "adress": "deannunderwood@gluid.com"
+      },
+      {
+        "libelle": "bureau",
+        "adress": "deannunderwood@gluid.com"
+      }
+    ],
+    "group": [
+      {
+        "name": "domicile"
+      },
+      {
+        "name": "privé"
+      }
+    ]
+  },
+  {
+    "name": "Denise",
+    "firstname": "Farrell",
+    "phone": [
+      {
+        "libelle": "domicile",
+        "number": "(909) 500-3893"
+      },
+      {
+        "libelle": "privé",
+        "number": "(935) 504-2725"
+      }
+    ],
+    "postadress": {
+      "street": "Suydam Place",
+      "codepost": "31000",
+      "town": "Conestoga"
+    },
+    "mailadress": [
+      {
+        "libelle": "privé",
+        "adress": "denisefarrell@gluid.com"
+      },
+      {
+        "libelle": "privé",
+        "adress": "denisefarrell@gluid.com"
+      }
+    ],
+    "group": [
+      {
+        "name": "domicile"
+      },
+      {
+        "name": "bureau"
+      }
+    ]
+  },
+  {
+    "name": "Mclean",
+    "firstname": "Wong",
+    "phone": [
+      {
+        "libelle": "bureau",
+        "number": "(867) 489-3811"
+      },
+      {
+        "libelle": "bureau",
+        "number": "(806) 478-2568"
+      }
+    ],
+    "postadress": {
+      "street": "Granite Street",
+      "codepost": "09300",
+      "town": "Crown"
+    },
+    "mailadress": [
+      {
+        "libelle": "domicile",
+        "adress": "mcleanwong@gluid.com"
+      },
+      {
+        "libelle": "privé",
+        "adress": "mcleanwong@gluid.com"
+      }
+    ],
+    "group": [
+      {
+        "name": "domicile"
+      },
+      {
+        "name": "personnel"
+      }
+    ]
+  }
+]
