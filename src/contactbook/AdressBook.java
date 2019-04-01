@@ -14,7 +14,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
 /**
  *
  * @author BEN Formation
@@ -118,16 +117,16 @@ public class AdressBook {
             JSONParser parser = new JSONParser();
             Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
             JSONArray jsonObject = (JSONArray) object;
-            
+
             for (Object user : jsonObject) {
                 // Initialize new contact
                 Contactbook contact = new Contactbook();
                 JSONObject jsonObjectUser = (JSONObject) user;
-                
+
                 // set properties of contact from json file
                 contact.setName((String) jsonObjectUser.get("name"));
                 contact.setFirstname((String) jsonObjectUser.get("firstname"));
-                
+
                 // add contact to collection
                 this.listOfContacts.add(contact);
             }
@@ -146,6 +145,27 @@ public class AdressBook {
      */
     public ArrayList<Group> getListOfGroupsFromFile(String filePath) {
 
+        try {
+            // read the json file
+            JSONParser parser = new JSONParser();
+            Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
+            JSONArray jsonObject = (JSONArray) object;
+
+            for (Object groupObject : jsonObject) {
+                // Initialize new contact
+                Group group = new Group();
+                JSONObject jsonObjectUser = (JSONObject) groupObject;
+
+                // set properties of contact from json file
+                group.setName((String) jsonObjectUser.get("name"));
+
+                // add contact to collection
+                this.listOfGroups.add(group);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return listOfGroups;
     }
 

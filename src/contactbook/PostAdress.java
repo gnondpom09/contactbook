@@ -10,17 +10,18 @@ package contactbook;
  * @author BEN Formation
  */
 public class PostAdress {
-    
+
     private String street;
     private String codepost;
     private String town;
-    
-    public PostAdress () {}
-    
-    public PostAdress (String pstreet, String pcodepost, String ptown) {
-    street = pstreet;
-    codepost = pcodepost;
-    town = ptown;
+
+    public PostAdress() {
+    }
+
+    public PostAdress(String pstreet, String pcodepost, String ptown) {
+        street = pstreet;
+        codepost = pcodepost;
+        town = ptown;
     }
 
     /**
@@ -64,6 +65,11 @@ public class PostAdress {
     public void setTown(String town) {
         this.town = town;
     }
-    
-    
+
+    public void setInformations(String pstreet, String pcodepost, String ptown) {
+        street = pstreet;
+        codepost = pcodepost;
+        town = ptown;
+    }
+
 }
