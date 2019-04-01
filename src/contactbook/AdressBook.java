@@ -22,7 +22,7 @@ import org.json.simple.parser.ParseException;
 public class AdressBook {
 
     public ArrayList<Contactbook> listOfContacts = new ArrayList<Contactbook>();
-    public ArrayList<String> listOfGroups = new ArrayList<String>();
+    public ArrayList<Group> listOfGroups = new ArrayList<Group>();
 
     /**
      * Constructor
@@ -53,7 +53,7 @@ public class AdressBook {
      *
      * @return
      */
-    public ArrayList<String> getListOfGroups() {
+    public ArrayList<Group> getListOfGroups() {
         return this.listOfGroups;
     }
 
@@ -62,7 +62,7 @@ public class AdressBook {
      *
      * @param groups
      */
-    public void setListOfGroups(ArrayList<String> groups) {
+    public void setListOfGroups(ArrayList<Group> groups) {
         this.listOfGroups = groups;
     }
 
@@ -144,7 +144,7 @@ public class AdressBook {
      * @param file
      * @return
      */
-    public ArrayList<String> getListOfGroupsFromFile(String filePath) {
+    public ArrayList<Group> getListOfGroupsFromFile(String filePath) {
 
         return listOfGroups;
     }
@@ -157,7 +157,7 @@ public class AdressBook {
      * @param groups
      * @param contacts
      */
-    public void updateJsonFile(String filePath, ArrayList<String> groups, ArrayList<Contactbook> contacts) {
+    public void updateJsonFile(String filePath, ArrayList<Group> groups, ArrayList<Contactbook> contacts) {
 
     }
 

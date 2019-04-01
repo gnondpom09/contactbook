@@ -36,16 +36,15 @@ public class MainWindow extends JFrame {
     private final JPanel globalPanel;
     private final JPanel groupPanel;
     private final JPanel detailPanel;
-    private final JPanel formPanel;
     private final JPanel listPanel;
     public Color COLOR_WEB = Color.decode("#00FFCC");
     public Color COLOR_LIGHT = Color.lightGray;
-    private final ArrayList groupList;
-    private final JTextField name;
-    private final JTextField firstname;
-    private final JTextField street;
-    private final JTextField zipCode;
-    private final JTextField city;
+    private ArrayList groupList;
+    private JTextField name;
+    private JTextField firstname;
+    private JTextField street;
+    private JTextField zipCode;
+    private JTextField city;
     private String categoryPhoneSelected;
     private String categoryPhoneSelected2;
     private JTextField phoneNumber;
@@ -54,10 +53,13 @@ public class MainWindow extends JFrame {
     private String categoryEmailSelected2;
     private JTextField email;
     private JTextField email2;
-    private final ArrayList categoriesList;
-    private final ArrayList phoneNumbersList;
-    private final ArrayList emailsList;
-    private final ArrayList groupListOfContact;
+    private ArrayList categoriesList;
+    private ArrayList phoneNumbersList;
+    private ArrayList emailsList;
+    private ArrayList listOfContacts;
+    private ArrayList listOfGroups;
+    public static final String FILECONTACT = "contacts.json";
+    public static final String FILEGROUP = "src/contactbook/groups.json";
 
     /**
      * Constructor
@@ -71,7 +73,6 @@ public class MainWindow extends JFrame {
         globalPanel = new JPanel();
         groupPanel = new JPanel();
         detailPanel = new JPanel();
-        formPanel = new JPanel();
         groupList = new ArrayList<String>();
         name = new JTextField();
         firstname = new JTextField();
@@ -91,16 +92,8 @@ public class MainWindow extends JFrame {
         categoriesList.add("Personnel");
         phoneNumbersList = new ArrayList<Phone>();
         emailsList = new ArrayList<MailAdress>();
-        groupListOfContact = new ArrayList<String>();
-
-        // get datas from file and fill collection of contacts
-        AdressBook test = new AdressBook();
-        test.getListOfContactsFromFile("contacts.json");
-
-        // test
-        for (Contactbook user : test.getListOfContacts()) {
-            System.out.println("item : " + user.getName() + " - " + user.getFirstname());
-        }
+        listOfContacts = new ArrayList<Contactbook>();
+        listOfGroups = new ArrayList<Group>();
 
         // Set content of window
         this.setContentPane(globalPanel);
@@ -114,8 +107,11 @@ public class MainWindow extends JFrame {
      */
     public void setGlobalPanel() {
 
-        // Initialize contact
+        // get datas from file and fill collection of contacts
         Contactbook person = new Contactbook();
+        AdressBook listsManager = new AdressBook();
+        listsManager.getListOfContactsFromFile(FILECONTACT);
+        listsManager.getListOfGroupsFromFile(FILEGROUP);
 
         // Distribute blocks
         globalPanel.setLayout(new BorderLayout());
@@ -128,14 +124,22 @@ public class MainWindow extends JFrame {
         JLabel lblGroup = new JLabel("Groupes");
         JPanel contentPanelGroup = new JPanel();
         contentPanelGroup.setLayout(new GridLayout(0, 2));
+
         // Get names list of groups from JSON file
         DefaultListModel groupsListModel = new DefaultListModel();
-        groupsListModel.addElement(groupList);
+//        for (Object group : listsManager.getListOfGroups()) {
+//            System.out.println("groupe : " + group.getName());
+//        }
+//        groupsListModel.addElement(listOfGroups);
+
         // Fill list panel with list of groups
-        JList listOfGroups = new JList(groupsListModel);
+        JList componentGroupsList = new JList(groupsListModel);
+
         // Button to add new group
         JButton btnAddGroup = new JButton("+");
 
+        // Get list of groups
+        // code ...
         // Event click to add new group
         btnAddGroup.addMouseListener(new MouseAdapter() {
             @Override
@@ -146,11 +150,23 @@ public class MainWindow extends JFrame {
         });
 
         //////////////////////////////////////////////////////////////////////
-        ////////////////////////////// PANE LIST /////////////////////////////
+        ////////////////////////////// PANE LIST CONTACTS ////////////////////
         //////////////////////////////////////////////////////////////////////
         JLabel titleList = new JLabel("liste des contacts");
-        listPanel.add(titleList);
-        listPanel.setBackground(COLOR_WEB);
+
+        // Get names list of groups from JSON file
+        DefaultListModel contactsListModel = new DefaultListModel();
+        // test display contacts
+        for (Contactbook user : listsManager.getListOfContacts()) {
+            System.out.println("item : " + user.getName() + " - " + user.getFirstname());
+            contactsListModel.addElement(listOfContacts);
+        }
+
+        // Fill list panel with list of groups
+        JList componentContactsList = new JList(contactsListModel);
+
+        // Get list of contacts
+        listOfContacts = listsManager.getListOfContacts();
 
         //////////////////////////////////////////////////////////////////////
         ////////////////////////////// PANE DETAIL ///////////////////////////
@@ -165,7 +181,7 @@ public class MainWindow extends JFrame {
         //////////////////////////////////////////////////////////////////////
         ////////////////////////////// PANE FORM /////////////////////////////
         //////////////////////////////////////////////////////////////////////
-        //contentPanelForm.setLayout(new GridLayout(2, 2));
+        //contentPanelForm.setLayout(new GridLayout(1, 2));
         JLabel lblName = new JLabel("Nom");
         JLabel lblFirstname = new JLabel("Prénom");
         JLabel lblAddress = new JLabel("Adresse postale");
@@ -300,10 +316,11 @@ public class MainWindow extends JFrame {
                         adress,
                         emailsList,
                         phoneNumbersList,
-                        groupListOfContact
+                        listOfGroups
                 );
 
                 // Push new contact in the list and save in JSON file
+                // code ...
             }
         });
 
@@ -328,7 +345,6 @@ public class MainWindow extends JFrame {
 
         // Event to validate update contact
         // code...
-
         // Event click cancel action
         btnCancel.addMouseListener(new MouseAdapter() {
             @Override
@@ -340,15 +356,23 @@ public class MainWindow extends JFrame {
                 btnAddNewContact.setVisible(true);
                 updateContact.setVisible(true);
                 btnCancel.setVisible(false);
+
+                // reset fields
+                // code...
             }
         });
 
         // Set content of panel group
         headerPanelGroup.add(lblGroup);
         headerPanelGroup.add(btnAddGroup);
-        contentPanelGroup.add(listOfGroups);
+        contentPanelGroup.add(componentGroupsList);
         groupPanel.add(headerPanelGroup);
         groupPanel.add(contentPanelGroup);
+
+        // Set content of panel contacts list
+        listPanel.add(titleList);
+        listPanel.add(componentContactsList);
+        listPanel.setBackground(COLOR_WEB);
 
         // set content of header in the panel detail
         headerPanelForm.add(btnAddNewContact);
@@ -374,6 +398,7 @@ public class MainWindow extends JFrame {
         contentPanelForm.add(lblEmail);
         contentPanelForm.add(comboBoxCategoriesListEmail);
         contentPanelForm.add(email);
+        contentPanelForm.add(lblEmail2);
         contentPanelForm.add(email2);
         contentPanelForm.add(comboBoxCategoriesListEmail2);
         contentPanelForm.add(email2);
