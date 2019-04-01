@@ -116,9 +116,9 @@ public class AdressBook {
             // read the json file
             JSONParser parser = new JSONParser();
             Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
-            JSONArray jsonObject = (JSONArray) object;
+            JSONArray jsonArray = (JSONArray) object;
 
-            for (Object user : jsonObject) {
+            for (Object user : jsonArray) {
                 // Initialize new contact
                 Contactbook contact = new Contactbook();
                 JSONObject jsonObjectUser = (JSONObject) user;
@@ -144,23 +144,22 @@ public class AdressBook {
      * @return
      */
     public ArrayList<Group> getListOfGroupsFromFile(String filePath) {
-
         try {
             // read the json file
             JSONParser parser = new JSONParser();
             Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
-            JSONArray jsonObject = (JSONArray) object;
+            JSONArray jsonArray = (JSONArray) object;
 
-            for (Object groupObject : jsonObject) {
-                // Initialize new contact
-                Group group = new Group();
-                JSONObject jsonObjectUser = (JSONObject) groupObject;
+            for (Object groups : jsonArray) {
+                // Initialize new group
+                Group groupe = new Group();
+                JSONObject jsonObjectGroup = (JSONObject) groups;
 
-                // set properties of contact from json file
-                group.setName((String) jsonObjectUser.get("name"));
+                // set properties of group from json file
+                groupe.setName((String) jsonObjectGroup.get("name"));
 
-                // add contact to collection
-                this.listOfGroups.add(group);
+                // add group to collection
+                this.listOfGroups.add(groupe);
             }
 
         } catch (Exception e) {
@@ -177,8 +176,38 @@ public class AdressBook {
      * @param groups
      * @param contacts
      */
-    public void updateJsonFile(String filePath, ArrayList<Group> groups, ArrayList<Contactbook> contacts) {
+    public void updateJsonFile(Contactbook person, String filePath, ArrayList<Group> groups, ArrayList<Contactbook> contacts) {
+        
+            // Here we convert Java Object to JSON 
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("name", person.getName()); // Set the first name/pair 
+            jsonObj.put("firstname", person.getFirstname()); 
+            //faire boucle pour l'adresse
+            jsonObj.put("codepost", person.getPostAdress().getCodepost());
+            jsonObj.put("street", person.getPostAdress().getStreet());
+            jsonObj.put("town", person.getPostAdress().getTown());
 
-    }
+//            for (Object postAdres : person.getPostAdress()) {
+//                postAdres.put("address", person.getMailAdress().get(0));
+//                jsonAdd.put("city", person.getAddress().getCity());
+//                jsonAdd.put("state", person.getAddress().getState());
+//            }
+
+            // We add the object to the main object
+            //jsonObj.put("address", jsonAdd);
+
+            // and finally we add the phone number
+            // In this case we need a json array to hold the java list
+//            JSONArray jsonArr = new JSONArray();
+//
+//            for (PhoneNumber pn : person.getPhoneList()) {
+//                JSONObject pnObj = new JSONObject();
+//                pnObj.put("num", pn.getNumber());
+//                pnObj.put("type", pn.getType());
+//                jsonArr.put(pnObj);
+//            }
+//
+//            jsonObj.put("phoneNumber", jsonArr);
+        }
 
 }

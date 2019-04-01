@@ -16,7 +16,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -66,7 +65,7 @@ public class MainWindow extends JFrame {
     private ArrayList listOfContacts;
     private ArrayList listOfGroups;
     public static final String FILECONTACT = "contacts.json";
-    public static final String FILEGROUP = "src/contactbook/groups.json";
+    public static final String FILEGROUP = "groups.json";
 
     /**
      * Constructor
@@ -117,6 +116,7 @@ public class MainWindow extends JFrame {
 
         // get datas from json file and fill collection of contacts
         Contactbook person = new Contactbook();
+        PostAdress adress = new PostAdress();
         AdressBook listsManager = new AdressBook();
         listsManager.getListOfContactsFromFile(FILECONTACT);
         listOfContacts = listsManager.getListOfContacts();
@@ -130,17 +130,15 @@ public class MainWindow extends JFrame {
         ////////////////////////////// PANE GROUPS ///////////////////////////
         //////////////////////////////////////////////////////////////////////
         JPanel headerPanelGroup = new JPanel();
-        headerPanelGroup.setLayout(new GridLayout(0, 2));
         JLabel lblGroup = new JLabel("Groupes");
         JPanel contentPanelGroup = new JPanel();
-        contentPanelGroup.setLayout(new GridLayout(0, 2));
 
         // Get names list of groups from JSON file
         DefaultListModel groupsListModel = new DefaultListModel();
-//        for (Object group : listsManager.getListOfGroups()) {
-//            System.out.println("groupe : " + group.getName());
-//        }
-//        groupsListModel.addElement(listOfGroups);
+        for (Group group : listsManager.getListOfGroups()) {
+            System.out.println("groupe : " + group.getName());
+            groupsListModel.addElement(group.getName());
+        }
 
         // Fill list panel with list of groups
         JList componentGroupsList = new JList(groupsListModel);
@@ -161,22 +159,34 @@ public class MainWindow extends JFrame {
         ////////////////////////////// PANE LIST CONTACTS ////////////////////
         //////////////////////////////////////////////////////////////////////
         JPanel headerList = new JPanel();
+        JPanel searchPanel = new JPanel();
         JLabel titleList = new JLabel("Contacts");
         JButton btnSearch = new JButton("OK");
 
         // Fill combobox with list of user names
         DefaultListModel contactsListModel = new DefaultListModel();
+        JList componentContactsList = new JList(contactsListModel);
+
         for (Contactbook user : listsManager.getListOfContacts()) {
             String itemName = user.getFirstname() + " " + user.getName();
             System.out.println("item : " + user.getName() + " - " + user.getFirstname());
             contactsListModel.addElement(itemName);
-        }
 
-        // Fill list panel with list of groups
-        JList componentContactsList = new JList(contactsListModel);
+            // set first item selected
+            componentContactsList.setSelectedIndex(0);
+
+        }
 
         // Get list of contacts
         listOfContacts = listsManager.getListOfContacts();
+
+        // Get informations of first contact
+        String item = (String) componentContactsList.getSelectedValue();
+        item = item.split(" ")[0];
+        for (int i = 0; i < listOfContacts.size(); i++) {
+            //person.setFirstname(listOfContacts.get(0).toString());
+            System.out.println("test first item : " + listOfContacts.get(0).toString());
+        }
 
         // Event click to search user
         btnSearch.addMouseListener(new MouseAdapter() {
@@ -219,15 +229,8 @@ public class MainWindow extends JFrame {
                     // Compare with name of contact
                     listsManager.findContactByName(ArrayNames[1], listOfContacts);
 
-                    // Fill properties of person instance with informations
-                    // Code...
-//                    person.setInformations(name.getText(),
-//                        firstname.getText(),
-//                        adress,
-//                        emailsList,
-//                        phoneNumbersList,
-//                        listOfGroups
-//                    );
+                    // assign contact fing in panel detail
+                    // code ...
                 } catch (Exception err) {
                     System.out.println(err);
                 }
@@ -243,11 +246,12 @@ public class MainWindow extends JFrame {
         headerPanelForm.setLayout(new GridLayout(0, 2));
         JPanel contentPanelForm = new JPanel();
         contentPanelForm.setLayout(new GridLayout(0, 1));
+        JPanel headerDetail = new JPanel();
+        JPanel headerForm = new JPanel();
 
         //////////////////////////////////////////////////////////////////////
         ////////////////////////////// PANE FORM /////////////////////////////
         //////////////////////////////////////////////////////////////////////
-        //contentPanelForm.setLayout(new GridLayout(1, 2));
         JLabel lblName = new JLabel("Nom");
         JLabel lblFirstname = new JLabel("Prénom");
         JLabel lblAddress = new JLabel("Adresse postale");
@@ -261,11 +265,11 @@ public class MainWindow extends JFrame {
         JComboBox comboBoxCategoriesListEmail2 = new JComboBox();
 
         // Set content of fields and combobox
-        name.setText((person.getName() != null) ? person.getName() : "Saisissez votre nom");
-        firstname.setText((person.getFirstname() != null) ? person.getFirstname() : "Saisissez votre prénom");
-        street.setText((person.getPostAdress() != null) ? person.getPostAdress().getStreet() : "Rue...");
-        zipCode.setText((person.getPostAdress() != null) ? person.getPostAdress().getCodepost() : "Code postal...");
-        city.setText((person.getPostAdress() != null) ? person.getPostAdress().getTown() : "Ville...");
+        name.setText((person.getName() != null) ? person.getName() : "");
+        firstname.setText((person.getFirstname() != null) ? person.getFirstname() : "");
+        street.setText((person.getPostAdress() != null) ? person.getPostAdress().getStreet() : "");
+        zipCode.setText((person.getPostAdress() != null) ? person.getPostAdress().getCodepost() : "");
+        city.setText((person.getPostAdress() != null) ? person.getPostAdress().getTown() : "");
         comboBoxCategoriesListPhone.setModel(new DefaultComboBoxModel(categoriesList.toArray()));
         comboBoxCategoriesListPhone2.setModel(new DefaultComboBoxModel(categoriesList.toArray()));
         comboBoxCategoriesListEmail.setModel(new DefaultComboBoxModel(categoriesList.toArray()));
@@ -346,12 +350,13 @@ public class MainWindow extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // set form of new contact to visible and hide detail panel
-                contentPanelDetail.setVisible(false);
-                contentPanelForm.setVisible(true);
+//                contentPanelDetail.setVisible(false);
+//                contentPanelForm.setVisible(true);
                 btnAddNewContact.setVisible(false);
                 updateContact.setVisible(false);
                 submitNewContact.setVisible(true);
                 btnCancel.setVisible(true);
+                name.setEditable(true);
             }
         });
 
@@ -360,12 +365,13 @@ public class MainWindow extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // set update form contact to visible and hide detail panel
-                contentPanelDetail.setVisible(true);
-                contentPanelForm.setVisible(false);
+//                contentPanelDetail.setVisible(true);
+//                contentPanelForm.setVisible(false);
                 btnAddNewContact.setVisible(true);
                 updateContact.setVisible(true);
                 submitNewContact.setVisible(false);
                 btnCancel.setVisible(false);
+                name.setEditable(false);
 
                 // push phone numbers in the list
                 phoneNumbersList.add(new Phone(categoryPhoneSelected, phoneNumber.getText()));
@@ -376,7 +382,7 @@ public class MainWindow extends JFrame {
                 emailsList.add(new MailAdress(categoryEmailSelected2, email2.getText()));
 
                 // Add new contact when submit
-                PostAdress adress = new PostAdress(street.getText(), zipCode.getText(), city.getText());
+//                PostAdress adress = new PostAdress(street.getText(), zipCode.getText(), city.getText());
                 Contactbook newContact = new Contactbook(name.getText(),
                         firstname.getText(),
                         adress,
@@ -395,12 +401,13 @@ public class MainWindow extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // set update form contact to visible and hide detail panel
-                contentPanelDetail.setVisible(false);
-                contentPanelForm.setVisible(true);
+//                contentPanelDetail.setVisible(false);
+//                contentPanelForm.setVisible(true);
                 submitNewContact.setVisible(true);
                 btnAddNewContact.setVisible(false);
                 updateContact.setVisible(false);
                 btnCancel.setVisible(true);
+                name.setEditable(true);
 
                 // fill form fields with values of contact selected
                 // code...
@@ -416,17 +423,32 @@ public class MainWindow extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // set update form contact to visible and hide detail panel
-                contentPanelDetail.setVisible(true);
-                contentPanelForm.setVisible(false);
+//                contentPanelDetail.setVisible(true);
+//                contentPanelForm.setVisible(false);
                 submitNewContact.setVisible(false);
                 btnAddNewContact.setVisible(true);
                 updateContact.setVisible(true);
                 btnCancel.setVisible(false);
+                name.setEditable(false);
 
                 // reset fields
                 // code...
             }
         });
+
+        // define boxes
+        BoxLayout boxLayoutGroup = new BoxLayout(headerPanelGroup, BoxLayout.X_AXIS);
+        headerPanelGroup.setLayout(boxLayoutGroup);
+        BoxLayout boxLayoutListGroup = new BoxLayout(contentPanelGroup, BoxLayout.Y_AXIS);
+        contentPanelGroup.setLayout(boxLayoutListGroup);
+//        BoxLayout boxLayoutPanelGroup = new BoxLayout(groupPanel, BoxLayout.Y_AXIS);
+//        groupPanel.setLayout(boxLayoutPanelGroup);
+        BoxLayout boxLayoutHeaderSearch = new BoxLayout(searchPanel, BoxLayout.X_AXIS);
+        searchPanel.setLayout(boxLayoutHeaderSearch);
+        BoxLayout boxlayoutList = new BoxLayout(listPanel, BoxLayout.Y_AXIS);
+        listPanel.setLayout(boxlayoutList);
+        BoxLayout boxlayoutForm = new BoxLayout(detailPanel, BoxLayout.Y_AXIS);
+        detailPanel.setLayout(boxlayoutForm);
 
         // Set content of panel group
         headerPanelGroup.add(lblGroup);
@@ -439,6 +461,7 @@ public class MainWindow extends JFrame {
         headerPanelGroup.setBackground(COLOR_GREY);
         lblGroup.setForeground(Color.white);
         groupPanel.setBackground(COLOR_DARK);
+        componentGroupsList.setBackground(Color.darkGray);
         componentGroupsList.setForeground(Color.white);
         btnAddGroup.setPreferredSize(new Dimension(25, 25));
         btnAddGroup.setBackground(COLOR_WEB);
@@ -446,30 +469,49 @@ public class MainWindow extends JFrame {
         btnAddGroup.setOpaque(true);
         btnAddGroup.setForeground(Color.white);
 
-        // define boxes
-        BoxLayout boxLayoutHeaderList = new BoxLayout(headerList, BoxLayout.X_AXIS);
-        headerList.setLayout(boxLayoutHeaderList);
-        BoxLayout boxlayoutList = new BoxLayout(listPanel, BoxLayout.Y_AXIS);
-        listPanel.setLayout(boxlayoutList);
-        BoxLayout boxlayoutForm = new BoxLayout(detailPanel, BoxLayout.Y_AXIS);
-        detailPanel.setLayout(boxlayoutForm);
-
         // Set content of panel contacts list
         headerList.add(titleList);
-        headerList.add(search);
-        headerList.add(btnSearch);
+        headerList.setMaximumSize(new Dimension(500, 50));
+        searchPanel.add(search);
+        searchPanel.add(btnSearch);
+        searchPanel.setMaximumSize(new Dimension(500, 25));
         listPanel.add(headerList);
+        listPanel.add(searchPanel);
         listPanel.add(componentContactsList);
 
         // Customn Paenl list
+        headerList.setBackground(Color.white);
+        searchPanel.setBackground(Color.white);
         listPanel.setBackground(Color.white);
         listPanel.setBorder(BorderFactory.createLineBorder(COLOR_LIGHT));
+        btnAddNewContact.setBorder(BorderFactory.createLineBorder(COLOR_WEB));
+        btnSearch.setBackground(COLOR_WEB);
+        btnSearch.setOpaque(true);
+        btnSearch.setBorder(BorderFactory.createLineBorder(COLOR_WEB));
+        btnSearch.setForeground(Color.white);
+        btnSearch.setPreferredSize(new Dimension(25, 25));
+        btnAddNewContact.setOpaque(true);
+        btnAddNewContact.setBackground(COLOR_WEB);
+        btnAddNewContact.setForeground(Color.white);
+        updateContact.setOpaque(true);
+        updateContact.setBackground(Color.white);
+        updateContact.setForeground(COLOR_WEB);
+        updateContact.setBorder(BorderFactory.createLineBorder(COLOR_WEB));
+        submitNewContact.setOpaque(true);
+        submitNewContact.setBackground(COLOR_WEB);
+        submitNewContact.setForeground(Color.white);
+        submitNewContact.setBorder(BorderFactory.createLineBorder(COLOR_WEB));
+        btnCancel.setOpaque(true);
+        btnCancel.setBackground(Color.white);
+        btnCancel.setForeground(COLOR_WEB);
+        btnCancel.setBorder(BorderFactory.createLineBorder(COLOR_WEB));
 
         // set content of header in the panel detail
-        headerPanelForm.add(btnAddNewContact);
         headerPanelForm.add(updateContact);
+        headerPanelForm.add(btnAddNewContact);
         headerPanelForm.add(submitNewContact);
         headerPanelForm.add(btnCancel);
+        headerPanelForm.setMaximumSize(new Dimension(500, 40));
 
         // Set content of detail and form of contact
         contentPanelForm.add(lblName);
@@ -501,8 +543,9 @@ public class MainWindow extends JFrame {
         detailPanel.setBackground(Color.white);
 
         // Init visibility of blocks
-        contentPanelDetail.setVisible(true);
-        contentPanelForm.setVisible(false);
+//        contentPanelDetail.setVisible(true);
+//        contentPanelForm.setVisible(false);
+        name.setEditable(false);
         btnAddNewContact.setVisible(true);
         updateContact.setVisible(true);
         submitNewContact.setVisible(false);

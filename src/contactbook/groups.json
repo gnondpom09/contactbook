@@ -1,11 +1,14 @@
 [
   {
-    "name": "Tous"
+    "name": "Tous",
+    "nbContacts": 0
   },
   {
-    "name": "Favoris"
+    "name": "Favoris",
+    "nbContacts": 0
   },
   {
-    "name": "professionnel"
+    "name": "professionnel",
+    "nbContacts": 0
   }
 ]
