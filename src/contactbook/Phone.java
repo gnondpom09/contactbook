@@ -17,6 +17,7 @@ public class Phone {
     public Phone (String plibelle, String pnumber) {
     number = pnumber;
     libelle = plibelle;
+    System.out.println("constructeur Phone");
     }
 
     /**

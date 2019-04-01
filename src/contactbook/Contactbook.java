@@ -30,12 +30,13 @@ public class Contactbook {
             PostAdress ppostadress, 
             ArrayList<Phone> pphoneList, 
             ArrayList<MailAdress> pmailadressList, 
-            ArrayList<String> group) {
+            ArrayList<String> pgroup) {
         name = pname;
         firstname = pfirstname;
         phone = pphoneList;
         postadress = ppostadress;
         mailadress = pmailadressList;
+        group = pgroup;
         System.out.println("constructeur contactbook");
 
     }
@@ -110,4 +111,27 @@ public class Contactbook {
         this.mailadress = mailadress;
     }
 
+    /**
+     * @return the group
+     */
+    public ArrayList<String> getGroup() {
+        return group;
+    }
+
+    /**
+     * @param group the group to set
+     */
+    public void setGroup(ArrayList<String> group) {
+        this.group = group;
+    }
+
+    
+    public void setInformation (String pname, 
+            String pfirstname, 
+            PostAdress ppostadress, 
+            ArrayList<Phone> pphoneList, 
+            ArrayList<MailAdress> pmailadressList, 
+            ArrayList<String> pgroup){
+    
+    }
 } //fin de classe

@@ -19,6 +19,8 @@ public class Group {
      */
     public Group() {
         
+        System.out.println("constructeur group");
+        
     }
     
     public String getName() {

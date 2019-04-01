@@ -21,6 +21,7 @@ public class PostAdress {
     street = pstreet;
     codepost = pcodepost;
     town = ptown;
+    System.out.println("constructeur PostAdress");
     }
 
     /**
