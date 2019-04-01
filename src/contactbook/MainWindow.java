@@ -7,12 +7,15 @@ package contactbook;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -37,9 +40,13 @@ public class MainWindow extends JFrame {
     private final JPanel groupPanel;
     private final JPanel detailPanel;
     private final JPanel listPanel;
-    public Color COLOR_WEB = Color.decode("#00FFCC");
+    public Color COLOR_WEB = Color.decode("#1BAF55");
+    public Color COLOR_DARK = Color.decode("#252529");
+    public Color COLOR_GREY = Color.decode("#2E2E33");
+    public Color COLOR_LIGTH = Color.decode("#F6F9FD");
     public Color COLOR_LIGHT = Color.lightGray;
     private ArrayList groupList;
+    private JTextField search;
     private JTextField name;
     private JTextField firstname;
     private JTextField street;
@@ -74,6 +81,7 @@ public class MainWindow extends JFrame {
         groupPanel = new JPanel();
         detailPanel = new JPanel();
         groupList = new ArrayList<String>();
+        search = new JTextField();
         name = new JTextField();
         firstname = new JTextField();
         street = new JTextField();
@@ -107,11 +115,13 @@ public class MainWindow extends JFrame {
      */
     public void setGlobalPanel() {
 
-        // get datas from file and fill collection of contacts
+        // get datas from json file and fill collection of contacts
         Contactbook person = new Contactbook();
         AdressBook listsManager = new AdressBook();
         listsManager.getListOfContactsFromFile(FILECONTACT);
+        listOfContacts = listsManager.getListOfContacts();
         listsManager.getListOfGroupsFromFile(FILEGROUP);
+        listOfGroups = listsManager.getListOfGroups();
 
         // Distribute blocks
         globalPanel.setLayout(new BorderLayout());
@@ -138,8 +148,6 @@ public class MainWindow extends JFrame {
         // Button to add new group
         JButton btnAddGroup = new JButton("+");
 
-        // Get list of groups
-        // code ...
         // Event click to add new group
         btnAddGroup.addMouseListener(new MouseAdapter() {
             @Override
@@ -152,14 +160,16 @@ public class MainWindow extends JFrame {
         //////////////////////////////////////////////////////////////////////
         ////////////////////////////// PANE LIST CONTACTS ////////////////////
         //////////////////////////////////////////////////////////////////////
-        JLabel titleList = new JLabel("liste des contacts");
+        JPanel headerList = new JPanel();
+        JLabel titleList = new JLabel("Contacts");
+        JButton btnSearch = new JButton("OK");
 
-        // Get names list of groups from JSON file
+        // Fill combobox with list of user names
         DefaultListModel contactsListModel = new DefaultListModel();
-        // test display contacts
         for (Contactbook user : listsManager.getListOfContacts()) {
+            String itemName = user.getFirstname() + " " + user.getName();
             System.out.println("item : " + user.getName() + " - " + user.getFirstname());
-            contactsListModel.addElement(listOfContacts);
+            contactsListModel.addElement(itemName);
         }
 
         // Fill list panel with list of groups
@@ -167,6 +177,62 @@ public class MainWindow extends JFrame {
 
         // Get list of contacts
         listOfContacts = listsManager.getListOfContacts();
+
+        // Event click to search user
+        btnSearch.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Compare value of field with concatenation of firstname and name
+                String itemSelected = (String) componentContactsList.getSelectedValue();
+
+                // get informations of user selected
+                String[] ArrayNames = itemSelected.split(" ");
+
+                try {
+                    // Compare with name of contact
+                    listsManager.findContactByName(ArrayNames[1], listOfContacts);
+
+                    // get informations of user find
+                    // code ...
+                    // update informations of person
+                    // code ..
+                } catch (Exception err) {
+                    System.out.println(err);
+                }
+
+            }
+        });
+
+        // Event click to select user in the list and display detail
+        componentContactsList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                // Get item selected
+                String itemSelected = (String) componentContactsList.getSelectedValue();
+
+                // get informations of user selected
+                String[] ArrayNames = itemSelected.split(" ");
+
+                // test 
+                System.out.println("Click : " + ArrayNames[1]);
+
+                try {
+                    // Compare with name of contact
+                    listsManager.findContactByName(ArrayNames[1], listOfContacts);
+
+                    // Fill properties of person instance with informations
+                    // Code...
+//                    person.setInformations(name.getText(),
+//                        firstname.getText(),
+//                        adress,
+//                        emailsList,
+//                        phoneNumbersList,
+//                        listOfGroups
+//                    );
+                } catch (Exception err) {
+                    System.out.println(err);
+                }
+            }
+        });
 
         //////////////////////////////////////////////////////////////////////
         ////////////////////////////// PANE DETAIL ///////////////////////////
@@ -369,10 +435,35 @@ public class MainWindow extends JFrame {
         groupPanel.add(headerPanelGroup);
         groupPanel.add(contentPanelGroup);
 
+        // Custon Panel group
+        headerPanelGroup.setBackground(COLOR_GREY);
+        lblGroup.setForeground(Color.white);
+        groupPanel.setBackground(COLOR_DARK);
+        componentGroupsList.setForeground(Color.white);
+        btnAddGroup.setPreferredSize(new Dimension(25, 25));
+        btnAddGroup.setBackground(COLOR_WEB);
+        btnAddGroup.setBorder(BorderFactory.createLineBorder(COLOR_WEB));
+        btnAddGroup.setOpaque(true);
+        btnAddGroup.setForeground(Color.white);
+
+        // define boxes
+        BoxLayout boxLayoutHeaderList = new BoxLayout(headerList, BoxLayout.X_AXIS);
+        headerList.setLayout(boxLayoutHeaderList);
+        BoxLayout boxlayoutList = new BoxLayout(listPanel, BoxLayout.Y_AXIS);
+        listPanel.setLayout(boxlayoutList);
+        BoxLayout boxlayoutForm = new BoxLayout(detailPanel, BoxLayout.Y_AXIS);
+        detailPanel.setLayout(boxlayoutForm);
+
         // Set content of panel contacts list
-        listPanel.add(titleList);
+        headerList.add(titleList);
+        headerList.add(search);
+        headerList.add(btnSearch);
+        listPanel.add(headerList);
         listPanel.add(componentContactsList);
-        listPanel.setBackground(COLOR_WEB);
+
+        // Customn Paenl list
+        listPanel.setBackground(Color.white);
+        listPanel.setBorder(BorderFactory.createLineBorder(COLOR_LIGHT));
 
         // set content of header in the panel detail
         headerPanelForm.add(btnAddNewContact);
@@ -421,10 +512,6 @@ public class MainWindow extends JFrame {
         globalPanel.add(groupPanel, BorderLayout.WEST);
         globalPanel.add(listPanel, BorderLayout.CENTER);
         globalPanel.add(detailPanel, BorderLayout.EAST);
-    }
-
-    public void setFormNewContact() {
-
     }
 
 }
