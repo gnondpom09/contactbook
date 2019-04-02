@@ -224,47 +224,27 @@ public class MainWindow extends JFrame {
                 System.out.println("item selectionné: " + itemSelected);
                 String[] ArrayNames = itemSelected.split(" ");
 
-                // test 
+                // test display name
                 System.out.println("Click : " + ArrayNames[1]);
-
-                
-                //System.out.println("Click : " + ArrayNames[2]);
-                //System.out.println("Click : " + ArrayNames[3]);test
-
-                // display infos in pane detail
-                name.setText(ArrayNames[1]);
-
 
                 try {
                     // Compare with name of contact
                     listsManager.findContactByName(ArrayNames[1], listOfContacts);
                     System.out.println("contact trouvé:");
+                    
+                    // Set fields with values of person selected
                     name.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getName());
-                    //récupération du contact dans la liste et comparaison dans le tableau
                     firstname.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getFirstname());
-                    street.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress().getCodepost());
-                    // assign contact find in panel detail
-                    
-                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getName());
-                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getFirstname());
-//                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPhone());
-//                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getMailAdress());
-                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress().getStreet());
-//                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getGroup());
-                    //name = (String) listsManager.findContactByName(ArrayNames[1], listOfContacts).getName();
-                    //person.setName(listsManager.findContactByName(ArrayNames[1], listOfContacts).getName());
-                    //person.setFirstname(listsManager.findContactByName(ArrayNames[1], listOfContacts).getFirstname());
-                    //person.setPostAdress(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress());
-                    
-                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress().getCodepost());
-                    
-                    name.setText((person.getName() != null) ? person.getName() : "");
-                    firstname.setText((person.getFirstname() != null) ? person.getFirstname() : "");
-                    street.setText((person.getPostAdress() != null) ? person.getPostAdress().getStreet() : "");
-                    zipCode.setText((person.getPostAdress() != null) ? person.getPostAdress().getCodepost() : "");
-                    city.setText((person.getPostAdress() != null) ? person.getPostAdress().getTown() : "");
-                    // code ...
+                    zipCode.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress().getCodepost());
+                    street.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress().getStreet());
+                    city.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress().getTown());
+                    phoneNumber.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPhone().get(0).getNumber());
+                    phoneNumber2.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPhone().get(1).getNumber());
+                    email.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getMailAdress().get(0).getAdress());
+                    email2.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getMailAdress().get(1).getAdress());
+
                 } catch (Exception err) {
+                    
                     System.out.println(err);
                 }
             }

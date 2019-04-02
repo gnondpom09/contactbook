@@ -109,44 +109,81 @@ public class AdressBook {
      *
      * @param file
      * @return
+     * @author laurent Botella, Benoit Mazzon
      */
     public ArrayList<Contactbook> getListOfContactsFromFile(String filePath) {
-        System.out.println("getList avant le try");
+
         try {
+            
             // read the json file
             JSONParser parser = new JSONParser();
             Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
             JSONArray jsonArray = (JSONArray) object;
-            System.out.println("try avant le for");
+            
+            // List all contacts in the file
             for (Object user : jsonArray) {
+
                 // Initialize new contact
                 Contactbook contact = new Contactbook();
                 JSONObject jsonObjectUser = (JSONObject) user;
-                //JSONObject jsonObjectPostAdress = (JSONObject) jsonObjectUser;
 
                 // set properties of contact from json file
                 contact.setName((String) jsonObjectUser.get("name"));
                 contact.setFirstname((String) jsonObjectUser.get("firstname"));
-                //PostAdress jsonObjectPostAdress = (PostAdress) jsonObjectUser.get("postadress");
                 JSONObject jsonObjectPostAdress = (JSONObject) jsonObjectUser.get("postadress");
-                System.out.println("aff json PostAdress");
-                System.out.println(jsonObjectPostAdress);
+                JSONArray jsonArrayPhones = (JSONArray) jsonObjectUser.get("phone");
+                JSONArray jsonArrayEmails = (JSONArray) jsonObjectUser.get("mailadress");
+
+                // set properties od adress instance
+                PostAdress adress = new PostAdress();
+                adress.setStreet((String) jsonObjectPostAdress.get("street"));
+                adress.setCodepost((String) jsonObjectPostAdress.get("codepost"));
+                adress.setTown((String) jsonObjectPostAdress.get("town"));
                 
-//                String test = (String) jsonObjectPostAdress.get("codepost");
-//                System.out.println("test :" + test);
-//                contact.setPostAdress( jsonObjectPostAdress);
-//                String zip = jsonObjectPostAdress.getCodepost();
-//                System.out.println(zip);
-//                //contact.setPostAdress(jsonObjectPostAdress.setCodepost(zip));
-//                contact.setPostAdress((PostAdress) jsonObjectUser.get("postadress") );
+                // Set adress of contact
+                contact.setPostAdress((PostAdress) adress);
                 
+                // Set phone list of user
+                ArrayList<Phone> phones = new ArrayList<Phone>();  
+                for (Object item : jsonArrayPhones) {
+                    
+                    // Set proerties of each phone
+                    Phone phone = new Phone();
+                    JSONObject phoneObject = (JSONObject) item;
+                    phone.setLibelle((String) phoneObject.get("libelle"));
+                    phone.setNumber((String) phoneObject.get("number"));
+                    
+                    // add each phone item in collection
+                    phones.add(phone);
+
+                }
+                // Set phone list of user
+                contact.setPhone((ArrayList<Phone>) phones);
+                
+                // Set email list of user
+                ArrayList<MailAdress> emails = new ArrayList<MailAdress>();
+                for (Object itemEmail : jsonArrayEmails) {
+                    
+                    // Set properties of each email
+                    MailAdress email = new MailAdress();
+                    JSONObject emailObject = (JSONObject) itemEmail;
+                    email.setLibelle((String) emailObject.get("libelle"));
+                    email.setAdress((String) emailObject.get("adress"));
+                    
+                    // Add each email in the collection
+                    emails.add(email);
+                }
+                // Set email list of user
+                contact.setMailAdress((ArrayList<MailAdress>) emails);
 
                 // add contact to collection
                 this.listOfContacts.add(contact);
             }
 
         } catch (Exception e) {
+            
             System.out.println(e);
+            
         }
         return listOfContacts;
     }
@@ -156,6 +193,7 @@ public class AdressBook {
      *
      * @param file
      * @return
+     * @author Laurent Botella
      */
     public ArrayList<Group> getListOfGroupsFromFile(String filePath) {
         try {
@@ -191,27 +229,25 @@ public class AdressBook {
      * @param contacts
      */
     public void updateJsonFile(Contactbook person, String filePath, ArrayList<Group> groups, ArrayList<Contactbook> contacts) {
-        
-            // Here we convert Java Object to JSON 
-            JSONObject jsonObj = new JSONObject();
-            jsonObj.put("name", person.getName()); // Set the first name/pair 
-            jsonObj.put("firstname", person.getFirstname()); 
-            //faire boucle pour l'adresse
-            jsonObj.put("codepost", person.getPostAdress().getCodepost());
-            jsonObj.put("street", person.getPostAdress().getStreet());
-            jsonObj.put("town", person.getPostAdress().getTown());
+
+        // Here we convert Java Object to JSON 
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("name", person.getName()); // Set the first name/pair 
+        jsonObj.put("firstname", person.getFirstname());
+        //faire boucle pour l'adresse
+        jsonObj.put("codepost", person.getPostAdress().getCodepost());
+        jsonObj.put("street", person.getPostAdress().getStreet());
+        jsonObj.put("town", person.getPostAdress().getTown());
 
 //            for (Object postAdres : person.getPostAdress()) {
 //                postAdres.put("address", person.getMailAdress().get(0));
 //                jsonAdd.put("city", person.getAddress().getCity());
 //                jsonAdd.put("state", person.getAddress().getState());
 //            }
-
-            // We add the object to the main object
-            //jsonObj.put("address", jsonAdd);
-
-            // and finally we add the phone number
-            // In this case we need a json array to hold the java list
+        // We add the object to the main object
+        //jsonObj.put("address", jsonAdd);
+        // and finally we add the phone number
+        // In this case we need a json array to hold the java list
 //            JSONArray jsonArr = new JSONArray();
 //
 //            for (PhoneNumber pn : person.getPhoneList()) {
@@ -222,6 +258,6 @@ public class AdressBook {
 //            }
 //
 //            jsonObj.put("phoneNumber", jsonArr);
-        }
+    }
 
 }

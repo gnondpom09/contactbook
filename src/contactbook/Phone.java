@@ -14,6 +14,10 @@ public class Phone {
     private String number;
     private String libelle;
     
+    public Phone() {
+        
+    }
+    
     public Phone (String plibelle, String pnumber) {
     number = pnumber;
     libelle = plibelle;

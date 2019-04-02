@@ -14,6 +14,10 @@ public class MailAdress {
     private String adress;
     private String libelle;
     
+    public MailAdress() {
+        
+    }
+    
     public MailAdress (String plibelle, String padress) {
     adress = padress;
     libelle = plibelle;
