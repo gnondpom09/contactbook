@@ -167,6 +167,9 @@ public class MainWindow extends JFrame {
         DefaultListModel contactsListModel = new DefaultListModel();
         JList componentContactsList = new JList(contactsListModel);
 
+        // Get list of contacts
+        listOfContacts = listsManager.getListOfContacts();
+
         for (Contactbook user : listsManager.getListOfContacts()) {
             String itemName = user.getFirstname() + " " + user.getName();
             System.out.println("item : " + user.getName() + " - " + user.getFirstname());
@@ -177,16 +180,14 @@ public class MainWindow extends JFrame {
 
         }
 
-        // Get list of contacts
-        listOfContacts = listsManager.getListOfContacts();
+        // Set first item by default
+        componentContactsList.setSelectedIndex(0);
+        String firstItemSelected = (String) componentContactsList.getSelectedValue();
+        String[] firstArrayNames = firstItemSelected.split(" ");
 
-        // Get informations of first contact
-        String item = (String) componentContactsList.getSelectedValue();
-        item = item.split(" ")[0];
-        for (int i = 0; i < listOfContacts.size(); i++) {
-            //person.setFirstname(listOfContacts.get(0).toString());
-            System.out.println("test first item : " + listOfContacts.get(0).toString());
-        }
+        // display infos in pane detail
+        System.out.println("test first item : " + firstArrayNames[1]);
+        name.setText(firstArrayNames[1]);
 
         // Event click to search user
         btnSearch.addMouseListener(new MouseAdapter() {
@@ -224,6 +225,8 @@ public class MainWindow extends JFrame {
 
                 // test 
                 System.out.println("Click : " + ArrayNames[1]);
+                // display infos in pane detail
+                name.setText(ArrayNames[1]);
 
                 try {
                     // Compare with name of contact
@@ -246,8 +249,7 @@ public class MainWindow extends JFrame {
         headerPanelForm.setLayout(new GridLayout(0, 2));
         JPanel contentPanelForm = new JPanel();
         contentPanelForm.setLayout(new GridLayout(0, 1));
-        JPanel headerDetail = new JPanel();
-        JPanel headerForm = new JPanel();
+        JPanel actionPanel = new JPanel();
 
         //////////////////////////////////////////////////////////////////////
         ////////////////////////////// PANE FORM /////////////////////////////
@@ -340,10 +342,11 @@ public class MainWindow extends JFrame {
         }
 
         // buttons hof header
-        JButton btnAddNewContact = new JButton("Ajouter");
+        JButton btnAddNewContact = new JButton("+");
         JButton submitNewContact = new JButton("Valider");
         JButton updateContact = new JButton("Modifier");
         JButton btnCancel = new JButton("Annuler");
+        JButton btnRemove = new JButton("Supprimer");
 
         // Event click to add new contact
         btnAddNewContact.addMouseListener(new MouseAdapter() {
@@ -356,6 +359,7 @@ public class MainWindow extends JFrame {
                 updateContact.setVisible(false);
                 submitNewContact.setVisible(true);
                 btnCancel.setVisible(true);
+                btnRemove.setVisible(false);
                 name.setEditable(true);
             }
         });
@@ -371,6 +375,7 @@ public class MainWindow extends JFrame {
                 updateContact.setVisible(true);
                 submitNewContact.setVisible(false);
                 btnCancel.setVisible(false);
+                btnRemove.setVisible(true);
                 name.setEditable(false);
 
                 // push phone numbers in the list
@@ -407,6 +412,7 @@ public class MainWindow extends JFrame {
                 btnAddNewContact.setVisible(false);
                 updateContact.setVisible(false);
                 btnCancel.setVisible(true);
+                btnRemove.setVisible(false);
                 name.setEditable(true);
 
                 // fill form fields with values of contact selected
@@ -416,8 +422,15 @@ public class MainWindow extends JFrame {
             }
         });
 
-        // Event to validate update contact
-        // code...
+        // Event to delete contact
+        btnRemove.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // remove contact from json file
+                // code...
+            }
+        });
+
         // Event click cancel action
         btnCancel.addMouseListener(new MouseAdapter() {
             @Override
@@ -429,6 +442,7 @@ public class MainWindow extends JFrame {
                 btnAddNewContact.setVisible(true);
                 updateContact.setVisible(true);
                 btnCancel.setVisible(false);
+                btnRemove.setVisible(true);
                 name.setEditable(false);
 
                 // reset fields
@@ -437,6 +451,8 @@ public class MainWindow extends JFrame {
         });
 
         // define boxes
+        BoxLayout boxLayoutFirstCol = new BoxLayout(groupPanel, BoxLayout.Y_AXIS);
+        groupPanel.setLayout(boxLayoutFirstCol);
         BoxLayout boxLayoutGroup = new BoxLayout(headerPanelGroup, BoxLayout.X_AXIS);
         headerPanelGroup.setLayout(boxLayoutGroup);
         BoxLayout boxLayoutListGroup = new BoxLayout(contentPanelGroup, BoxLayout.Y_AXIS);
@@ -445,10 +461,14 @@ public class MainWindow extends JFrame {
 //        groupPanel.setLayout(boxLayoutPanelGroup);
         BoxLayout boxLayoutHeaderSearch = new BoxLayout(searchPanel, BoxLayout.X_AXIS);
         searchPanel.setLayout(boxLayoutHeaderSearch);
+        BoxLayout boxLayoutLastCol = new BoxLayout(listPanel, BoxLayout.Y_AXIS);
+        listPanel.setLayout(boxLayoutLastCol);
         BoxLayout boxlayoutList = new BoxLayout(listPanel, BoxLayout.Y_AXIS);
         listPanel.setLayout(boxlayoutList);
         BoxLayout boxlayoutForm = new BoxLayout(detailPanel, BoxLayout.Y_AXIS);
         detailPanel.setLayout(boxlayoutForm);
+        BoxLayout boxLayoutAction = new BoxLayout(actionPanel, BoxLayout.X_AXIS);
+        actionPanel.setLayout(boxLayoutAction);
 
         // Set content of panel group
         headerPanelGroup.add(lblGroup);
@@ -456,6 +476,7 @@ public class MainWindow extends JFrame {
         contentPanelGroup.add(componentGroupsList);
         groupPanel.add(headerPanelGroup);
         groupPanel.add(contentPanelGroup);
+        groupPanel.setPreferredSize(new Dimension(150, 800));
 
         // Custon Panel group
         headerPanelGroup.setBackground(COLOR_GREY);
@@ -507,10 +528,7 @@ public class MainWindow extends JFrame {
         btnCancel.setBorder(BorderFactory.createLineBorder(COLOR_WEB));
 
         // set content of header in the panel detail
-        headerPanelForm.add(updateContact);
         headerPanelForm.add(btnAddNewContact);
-        headerPanelForm.add(submitNewContact);
-        headerPanelForm.add(btnCancel);
         headerPanelForm.setMaximumSize(new Dimension(500, 40));
 
         // Set content of detail and form of contact
@@ -535,11 +553,17 @@ public class MainWindow extends JFrame {
         contentPanelForm.add(email2);
         contentPanelForm.add(comboBoxCategoriesListEmail2);
         contentPanelForm.add(email2);
+        contentPanelForm.setPreferredSize(new Dimension(400, 800));
+        actionPanel.add(updateContact);
+        actionPanel.add(submitNewContact);
+        actionPanel.add(btnCancel);
+        actionPanel.add(btnRemove);
 
         // Distribute blocks to detail panel
         detailPanel.add(headerPanelForm);
         detailPanel.add(contentPanelDetail);
         detailPanel.add(contentPanelForm);
+        detailPanel.add(actionPanel);
         detailPanel.setBackground(Color.white);
 
         // Init visibility of blocks
