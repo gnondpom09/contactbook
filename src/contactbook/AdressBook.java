@@ -111,21 +111,35 @@ public class AdressBook {
      * @return
      */
     public ArrayList<Contactbook> getListOfContactsFromFile(String filePath) {
-
+        System.out.println("getList avant le try");
         try {
             // read the json file
             JSONParser parser = new JSONParser();
             Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
             JSONArray jsonArray = (JSONArray) object;
-
+            System.out.println("try avant le for");
             for (Object user : jsonArray) {
                 // Initialize new contact
                 Contactbook contact = new Contactbook();
                 JSONObject jsonObjectUser = (JSONObject) user;
+                //JSONObject jsonObjectPostAdress = (JSONObject) jsonObjectUser;
 
                 // set properties of contact from json file
                 contact.setName((String) jsonObjectUser.get("name"));
                 contact.setFirstname((String) jsonObjectUser.get("firstname"));
+                //PostAdress jsonObjectPostAdress = (PostAdress) jsonObjectUser.get("postadress");
+                JSONObject jsonObjectPostAdress = (JSONObject) jsonObjectUser.get("postadress");
+                System.out.println("aff json PostAdress");
+                System.out.println(jsonObjectPostAdress);
+                
+//                String test = (String) jsonObjectPostAdress.get("codepost");
+//                System.out.println("test :" + test);
+//                contact.setPostAdress( jsonObjectPostAdress);
+//                String zip = jsonObjectPostAdress.getCodepost();
+//                System.out.println(zip);
+//                //contact.setPostAdress(jsonObjectPostAdress.setCodepost(zip));
+//                contact.setPostAdress((PostAdress) jsonObjectUser.get("postadress") );
+                
 
                 // add contact to collection
                 this.listOfContacts.add(contact);

@@ -221,18 +221,48 @@ public class MainWindow extends JFrame {
                 String itemSelected = (String) componentContactsList.getSelectedValue();
 
                 // get informations of user selected
+                System.out.println("item selectionné: " + itemSelected);
                 String[] ArrayNames = itemSelected.split(" ");
 
                 // test 
                 System.out.println("Click : " + ArrayNames[1]);
+
+                
+                //System.out.println("Click : " + ArrayNames[2]);
+                //System.out.println("Click : " + ArrayNames[3]);test
+
                 // display infos in pane detail
                 name.setText(ArrayNames[1]);
+
 
                 try {
                     // Compare with name of contact
                     listsManager.findContactByName(ArrayNames[1], listOfContacts);
-
-                    // assign contact fing in panel detail
+                    System.out.println("contact trouvé:");
+                    name.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getName());
+                    //récupération du contact dans la liste et comparaison dans le tableau
+                    firstname.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getFirstname());
+                    street.setText(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress().getCodepost());
+                    // assign contact find in panel detail
+                    
+                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getName());
+                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getFirstname());
+//                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPhone());
+//                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getMailAdress());
+                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress().getStreet());
+//                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getGroup());
+                    //name = (String) listsManager.findContactByName(ArrayNames[1], listOfContacts).getName();
+                    //person.setName(listsManager.findContactByName(ArrayNames[1], listOfContacts).getName());
+                    //person.setFirstname(listsManager.findContactByName(ArrayNames[1], listOfContacts).getFirstname());
+                    //person.setPostAdress(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress());
+                    
+                    System.out.println(listsManager.findContactByName(ArrayNames[1], listOfContacts).getPostAdress().getCodepost());
+                    
+                    name.setText((person.getName() != null) ? person.getName() : "");
+                    firstname.setText((person.getFirstname() != null) ? person.getFirstname() : "");
+                    street.setText((person.getPostAdress() != null) ? person.getPostAdress().getStreet() : "");
+                    zipCode.setText((person.getPostAdress() != null) ? person.getPostAdress().getCodepost() : "");
+                    city.setText((person.getPostAdress() != null) ? person.getPostAdress().getTown() : "");
                     // code ...
                 } catch (Exception err) {
                     System.out.println(err);
@@ -361,6 +391,15 @@ public class MainWindow extends JFrame {
                 btnCancel.setVisible(true);
                 btnRemove.setVisible(false);
                 name.setEditable(true);
+                firstname.setEditable(true);
+                street.setEditable(true);
+                zipCode.setEditable(true);
+                city.setEditable(true);
+                phoneNumber.setEditable(true);
+                phoneNumber2.setEditable(true);
+                email.setEditable(true);
+                email2.setEditable(true);
+
             }
         });
 
@@ -377,6 +416,14 @@ public class MainWindow extends JFrame {
                 btnCancel.setVisible(false);
                 btnRemove.setVisible(true);
                 name.setEditable(false);
+                firstname.setEditable(false);
+                street.setEditable(false);
+                zipCode.setEditable(false);
+                city.setEditable(false);
+                phoneNumber.setEditable(false);
+                phoneNumber2.setEditable(false);
+                email.setEditable(false);
+                email2.setEditable(false);
 
                 // push phone numbers in the list
                 phoneNumbersList.add(new Phone(categoryPhoneSelected, phoneNumber.getText()));
@@ -414,6 +461,14 @@ public class MainWindow extends JFrame {
                 btnCancel.setVisible(true);
                 btnRemove.setVisible(false);
                 name.setEditable(true);
+                firstname.setEditable(true);
+                street.setEditable(true);
+                zipCode.setEditable(true);
+                city.setEditable(true);
+                phoneNumber.setEditable(true);
+                phoneNumber2.setEditable(true);
+                email.setEditable(true);
+                email2.setEditable(true);
 
                 // fill form fields with values of contact selected
                 // code...
@@ -444,6 +499,14 @@ public class MainWindow extends JFrame {
                 btnCancel.setVisible(false);
                 btnRemove.setVisible(true);
                 name.setEditable(false);
+                firstname.setEditable(false);
+                street.setEditable(false);
+                zipCode.setEditable(false);
+                city.setEditable(false);
+                phoneNumber.setEditable(false);
+                phoneNumber2.setEditable(false);
+                email.setEditable(false);
+                email2.setEditable(false);
 
                 // reset fields
                 // code...
@@ -500,7 +563,7 @@ public class MainWindow extends JFrame {
         listPanel.add(searchPanel);
         listPanel.add(componentContactsList);
 
-        // Customn Paenl list
+        // Customn Panel list
         headerList.setBackground(Color.white);
         searchPanel.setBackground(Color.white);
         listPanel.setBackground(Color.white);
@@ -570,6 +633,14 @@ public class MainWindow extends JFrame {
 //        contentPanelDetail.setVisible(true);
 //        contentPanelForm.setVisible(false);
         name.setEditable(false);
+        firstname.setEditable(false);
+        street.setEditable(false);
+        zipCode.setEditable(false);
+        city.setEditable(false);
+        phoneNumber.setEditable(false);
+        phoneNumber2.setEditable(false);
+        email.setEditable(false);
+        email2.setEditable(false);
         btnAddNewContact.setVisible(true);
         updateContact.setVisible(true);
         submitNewContact.setVisible(false);
