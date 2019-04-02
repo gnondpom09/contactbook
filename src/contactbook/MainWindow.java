@@ -553,7 +553,7 @@ public class MainWindow extends JFrame {
         contentPanelForm.add(email2);
         contentPanelForm.add(comboBoxCategoriesListEmail2);
         contentPanelForm.add(email2);
-        contentPanelForm.setPreferredSize(new Dimension(400, 800));
+        contentPanelForm.setPreferredSize(new Dimension(500, 800));
         actionPanel.add(updateContact);
         actionPanel.add(submitNewContact);
         actionPanel.add(btnCancel);
