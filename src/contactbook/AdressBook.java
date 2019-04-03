@@ -94,8 +94,9 @@ public class AdressBook {
      * @author Benoit Mazzon, Laurent Botella
      */
     public Contactbook findContactByName(String name, ArrayList<Contactbook> listcontact) throws IOException, ParseException {
-        Contactbook contactfind = new Contactbook();
+
         // Check name of contact and compare
+        Contactbook contactfind = new Contactbook();
         for (Contactbook contactbook : listcontact) {
             if (name.compareTo(contactbook.getName()) == 0) {
                 contactfind = contactbook;
@@ -114,12 +115,12 @@ public class AdressBook {
     public ArrayList<Contactbook> getListOfContactsFromFile(String filePath) {
 
         try {
-            
+
             // read the json file
             JSONParser parser = new JSONParser();
             Object object = parser.parse(new FileReader("src/contactbook/" + filePath));
             JSONArray jsonArray = (JSONArray) object;
-            
+
             // List all contacts in the file
             for (Object user : jsonArray) {
 
@@ -139,37 +140,37 @@ public class AdressBook {
                 adress.setStreet((String) jsonObjectPostAdress.get("street"));
                 adress.setCodepost((String) jsonObjectPostAdress.get("codepost"));
                 adress.setTown((String) jsonObjectPostAdress.get("town"));
-                
+
                 // Set adress of contact
                 contact.setPostAdress((PostAdress) adress);
-                
+
                 // Set phone list of user
-                ArrayList<Phone> phones = new ArrayList<Phone>();  
+                ArrayList<Phone> phones = new ArrayList<Phone>();
                 for (Object item : jsonArrayPhones) {
-                    
+
                     // Set proerties of each phone
                     Phone phone = new Phone();
                     JSONObject phoneObject = (JSONObject) item;
                     phone.setLibelle((String) phoneObject.get("libelle"));
                     phone.setNumber((String) phoneObject.get("number"));
-                    
+
                     // add each phone item in collection
                     phones.add(phone);
 
                 }
                 // Set phone list of user
                 contact.setPhone((ArrayList<Phone>) phones);
-                
+
                 // Set email list of user
                 ArrayList<MailAdress> emails = new ArrayList<MailAdress>();
                 for (Object itemEmail : jsonArrayEmails) {
-                    
+
                     // Set properties of each email
                     MailAdress email = new MailAdress();
                     JSONObject emailObject = (JSONObject) itemEmail;
                     email.setLibelle((String) emailObject.get("libelle"));
                     email.setAdress((String) emailObject.get("adress"));
-                    
+
                     // Add each email in the collection
                     emails.add(email);
                 }
@@ -181,9 +182,9 @@ public class AdressBook {
             }
 
         } catch (Exception e) {
-            
+
             System.out.println(e);
-            
+
         }
         return listOfContacts;
     }
@@ -227,6 +228,7 @@ public class AdressBook {
      * @param file
      * @param groups
      * @param contacts
+     * @author Benoit Mazzon
      */
     public void updateJsonFile(Contactbook person, String filePath, ArrayList<Group> groups, ArrayList<Contactbook> contacts) {
 
