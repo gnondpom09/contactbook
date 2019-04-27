@@ -37,7 +37,6 @@ public class Contactbook {
         postadress = ppostadress;
         mailadress = pmailadressList;
         group = pgroup;
-        System.out.println("constructeur contactbook");
 
     }
 

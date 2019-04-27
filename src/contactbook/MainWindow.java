@@ -64,8 +64,10 @@ public class MainWindow extends JFrame {
     private ArrayList emailsList;
     private ArrayList listOfContacts;
     private ArrayList listOfGroups;
+    private Contactbook userFind = new Contactbook();
     public static final String FILECONTACT = "contacts.json";
     public static final String FILEGROUP = "groups.json";
+    public static final String FILETEST = "test.json";
 
     /**
      * Constructor
@@ -283,81 +285,81 @@ public class MainWindow extends JFrame {
         comboBoxCategoriesListPhone.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 // select type of phone
                 categoryPhoneSelected = comboBoxCategoriesListPhone.getSelectedItem().toString();
-                
+
             }
         });
         if (person.getPhone() != null) {
-            
+
             // Get list of phones and get first item, set combobox and fields with properties label and number
             for (int i = 0; i < person.getPhone().size(); i++) {
                 comboBoxCategoriesListPhone.setSelectedItem(person.getPhone().set(0, person.getPhone().get(i)).getLibelle());
                 phoneNumber.setText(person.getPhone().set(0, person.getPhone().get(i)).getNumber());
             }
-            
+
         }
 
         // Event to select categorie of second phone
         comboBoxCategoriesListPhone2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 // select type of phone
                 categoryPhoneSelected2 = comboBoxCategoriesListPhone2.getSelectedItem().toString();
-                
+
             }
         });
         if (person.getPhone() != null) {
-            
+
             // Get list of phones and get second item, set combobox and fields with properties label and number
             for (int i = 0; i < person.getPhone().size(); i++) {
                 comboBoxCategoriesListPhone2.setSelectedItem(person.getPhone().set(1, person.getPhone().get(i)).getLibelle());
                 phoneNumber2.setText(person.getPhone().set(1, person.getPhone().get(i)).getNumber());
             }
-            
+
         }
 
         // Event to select categorie of first email
         comboBoxCategoriesListEmail.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 // select type of phone
                 categoryEmailSelected = comboBoxCategoriesListEmail.getSelectedItem().toString();
-                
+
             }
         });
         if (person.getMailAdress() != null) {
-            
+
             // Get list of emails and get second item, set combobox and fields with properties label and email
             for (int i = 0; i < person.getMailAdress().size(); i++) {
                 comboBoxCategoriesListEmail.setSelectedItem(person.getMailAdress().set(0, person.getMailAdress().get(i)).getLibelle());
                 email.setText(person.getMailAdress().set(0, person.getMailAdress().get(i)).getAdress());
-            } 
-            
+            }
+
         }
 
         // Event to select category of second email
         comboBoxCategoriesListEmail2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 // select type of phone
-                categoryEmailSelected2 = comboBoxCategoriesListEmail2.getSelectedItem().toString(); 
-                
+                categoryEmailSelected2 = comboBoxCategoriesListEmail2.getSelectedItem().toString();
+
             }
-            
+
         });
         if (person.getMailAdress() != null) {
-            
+
             // Get list of emails and get first item, set combobox and fields with properties label and email
             for (int i = 0; i < person.getMailAdress().size(); i++) {
                 comboBoxCategoriesListEmail2.setSelectedItem(person.getMailAdress().set(1, person.getMailAdress().get(i)).getLibelle());
                 email2.setText(person.getMailAdress().set(1, person.getMailAdress().get(i)).getAdress());
             }
-            
+
         }
 
         // buttons hof header
@@ -372,65 +374,31 @@ public class MainWindow extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                // set form of new contact to visible and hide detail panel
+                // set form of new contact to visible and set fields to empty
                 btnAddNewContact.setVisible(false);
                 updateContact.setVisible(false);
                 submitNewContact.setVisible(true);
                 btnCancel.setVisible(true);
                 btnRemove.setVisible(false);
                 name.setEditable(true);
+                name.setText("");
                 firstname.setEditable(true);
+                firstname.setText("");
                 street.setEditable(true);
+                street.setText("");
                 zipCode.setEditable(true);
+                zipCode.setText("");
                 city.setEditable(true);
+                city.setText("");
                 phoneNumber.setEditable(true);
+                phoneNumber.setText("");
                 phoneNumber2.setEditable(true);
+                phoneNumber2.setText("");
                 email.setEditable(true);
+                email.setText("");
                 email2.setEditable(true);
+                email2.setText("");
 
-            }
-        });
-
-        // Event click to submit new contact
-        submitNewContact.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-                // set update form contact to visible and hide detail panel
-                btnAddNewContact.setVisible(true);
-                updateContact.setVisible(true);
-                submitNewContact.setVisible(false);
-                btnCancel.setVisible(false);
-                btnRemove.setVisible(true);
-                name.setEditable(false);
-                firstname.setEditable(false);
-                street.setEditable(false);
-                zipCode.setEditable(false);
-                city.setEditable(false);
-                phoneNumber.setEditable(false);
-                phoneNumber2.setEditable(false);
-                email.setEditable(false);
-                email2.setEditable(false);
-
-                // push phone numbers in the list
-                phoneNumbersList.add(new Phone(categoryPhoneSelected, phoneNumber.getText()));
-                phoneNumbersList.add(new Phone(categoryPhoneSelected2, phoneNumber2.getText()));
-
-                // Push emails in the list
-                emailsList.add(new MailAdress(categoryEmailSelected, email.getText()));
-                emailsList.add(new MailAdress(categoryEmailSelected2, email2.getText()));
-
-                // Add new contact when submit
-                Contactbook newContact = new Contactbook(name.getText(),
-                        firstname.getText(),
-                        adress,
-                        emailsList,
-                        phoneNumbersList,
-                        listOfGroups
-                );
-
-                // Push new contact in the list and save in JSON file
-                // code ...
             }
         });
 
@@ -455,10 +423,73 @@ public class MainWindow extends JFrame {
                 email.setEditable(true);
                 email2.setEditable(true);
 
-                // fill form fields with values of contact selected
-                // code...
-                // update contact, update list of contacts and save in JSON file 
-                // code...
+                // Find contact selected in the list
+                try {
+                    userFind = listsManager.findContactByName(name.getText(), listOfContacts);
+                } catch (Exception err) {
+                    System.out.println(err);
+                }
+            }
+        });
+
+        // Event click to submit new contact
+        submitNewContact.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                // set update form contact to visible and hide detail panel
+                btnAddNewContact.setVisible(true);
+                updateContact.setVisible(true);
+                submitNewContact.setVisible(false);
+                btnCancel.setVisible(false);
+                btnRemove.setVisible(true);
+                name.setEditable(false);
+                firstname.setEditable(false);
+                street.setEditable(false);
+                zipCode.setEditable(false);
+                city.setEditable(false);
+                phoneNumber.setEditable(false);
+                phoneNumber2.setEditable(false);
+                email.setEditable(false);
+                email2.setEditable(false);
+
+                // Get adress properties
+                adress.setStreet(street.getText());
+                adress.setCodepost(zipCode.getText());
+                adress.setTown(city.getText());
+
+                // Push emails in the list
+                emailsList.add(new MailAdress(categoryEmailSelected, email.getText()));
+                emailsList.add(new MailAdress(categoryEmailSelected2, email2.getText()));
+
+                // push phone numbers in the list
+                phoneNumbersList.add(new Phone(categoryPhoneSelected, phoneNumber.getText()));
+                phoneNumbersList.add(new Phone(categoryPhoneSelected2, phoneNumber2.getText()));
+
+                // Add new contact when submit
+                Contactbook newContact = new Contactbook(name.getText(),
+                        firstname.getText(),
+                        adress,
+                        phoneNumbersList,
+                        emailsList,
+                        listOfGroups
+                );
+
+                // remove user find from the list if contact updated
+                System.out.println("user to remove : " + userFind.getName());
+                ArrayList<Contactbook> newList = new ArrayList<Contactbook>();
+                if (userFind != null) {
+                    System.out.println("new list");
+                    newList = listsManager.removeContact(userFind, listOfContacts);
+                    // Push new contact in the list and save in JSON file
+                    listsManager.addNewUserInListOfContacts(newContact, FILECONTACT, groupList, newList);
+                } else {
+                    // Push new contact in the list and save in JSON file
+                    listsManager.addNewUserInListOfContacts(newContact, FILECONTACT, groupList, listOfContacts);
+                }
+                // update list of contacts
+                listOfContacts = listsManager.getListOfContacts();
+
             }
         });
 
@@ -466,10 +497,9 @@ public class MainWindow extends JFrame {
         btnRemove.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+
                 // remove contact from json file
                 // code...
-                
             }
         });
 

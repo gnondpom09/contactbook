@@ -8,6 +8,7 @@ package contactbook;
 import java.io.File;
 import java.util.ArrayList;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -222,44 +223,121 @@ public class AdressBook {
     }
 
     /**
-     * Get list of contacts and groups updated and write collections in Json
-     * file
+     * Add new user in the json file file
      *
      * @param file
      * @param groups
      * @param contacts
-     * @author Benoit Mazzon
+     * @author Benoit Mazzon, Laurent Botella
      */
-    public void updateJsonFile(Contactbook person, String filePath, ArrayList<Group> groups, ArrayList<Contactbook> contacts) {
+    public void addNewUserInListOfContacts(Contactbook person, String filePath, ArrayList<Group> groups, ArrayList<Contactbook> contacts) {
 
-        // Here we convert Java Object to JSON 
-        JSONObject jsonObj = new JSONObject();
-        jsonObj.put("name", person.getName()); // Set the first name/pair 
-        jsonObj.put("firstname", person.getFirstname());
-        //faire boucle pour l'adresse
-        jsonObj.put("codepost", person.getPostAdress().getCodepost());
-        jsonObj.put("street", person.getPostAdress().getStreet());
-        jsonObj.put("town", person.getPostAdress().getTown());
+        JSONArray jsonContactsArray = new JSONArray();
 
-//            for (Object postAdres : person.getPostAdress()) {
-//                postAdres.put("address", person.getMailAdress().get(0));
-//                jsonAdd.put("city", person.getAddress().getCity());
-//                jsonAdd.put("state", person.getAddress().getState());
-//            }
-        // We add the object to the main object
-        //jsonObj.put("address", jsonAdd);
-        // and finally we add the phone number
-        // In this case we need a json array to hold the java list
-//            JSONArray jsonArr = new JSONArray();
-//
-//            for (PhoneNumber pn : person.getPhoneList()) {
-//                JSONObject pnObj = new JSONObject();
-//                pnObj.put("num", pn.getNumber());
-//                pnObj.put("type", pn.getType());
-//                jsonArr.put(pnObj);
-//            }
-//
-//            jsonObj.put("phoneNumber", jsonArr);
+        // Add new contact in the global list
+        
+        contacts.add(person);
+
+        for (Contactbook contact : contacts) {
+
+            JSONObject jsonObj = new JSONObject();
+            // set properties of new contact
+            jsonObj.put("name", contact.getName()); // Set the first name/pair 
+            jsonObj.put("firstname", contact.getFirstname());
+
+            // set Adress object
+            JSONObject addressList = new JSONObject();
+            addressList.put("codepost", contact.getPostAdress().getCodepost());
+            addressList.put("street", contact.getPostAdress().getStreet());
+            addressList.put("town", contact.getPostAdress().getTown());
+            jsonObj.put("postadress", addressList);
+
+            // Set phone 1 and phone 2 properties
+            JSONObject phone1 = new JSONObject();
+            JSONObject phone2 = new JSONObject();
+
+            if (contact.getPhone() != null) {
+                for (int i = 0; i < contact.getPhone().size(); i++) {
+                    System.out.println(contact.getPhone().get(i).getLibelle());
+                    phone1.put("libelle", contact.getPhone().set(0, contact.getPhone().get(i)).getLibelle());
+                    phone1.put("number", contact.getPhone().set(0, contact.getPhone().get(i)).getNumber());
+                    phone2.put("libelle", contact.getPhone().set(1, contact.getPhone().get(i)).getLibelle());
+                    phone2.put("number", contact.getPhone().set(1, contact.getPhone().get(i)).getNumber());
+                }
+            }
+
+            // Set list of phones
+            JSONArray phoneList = new JSONArray();
+            phoneList.add(phone1);
+            phoneList.add(phone2);
+            jsonObj.put("phone", phoneList);
+
+            // Set email 1 and email 2 properties
+            JSONObject email1 = new JSONObject();
+            JSONObject email2 = new JSONObject();
+
+            if (contact.getMailAdress() != null) {
+                for (int i = 0; i < contact.getMailAdress().size(); i++) {
+                    email1.put("libelle", contact.getMailAdress().set(0, contact.getMailAdress().get(i)).getLibelle());
+                    email1.put("adress", contact.getMailAdress().set(0, contact.getMailAdress().get(i)).getAdress());
+                    email2.put("libelle", contact.getMailAdress().set(1, contact.getMailAdress().get(i)).getLibelle());
+                    email2.put("adress", contact.getMailAdress().set(1, contact.getMailAdress().get(i)).getAdress());
+                }
+            }
+
+            // Set list of emails
+            JSONArray emailList = new JSONArray();
+            emailList.add(email1);
+            emailList.add(email2);
+            jsonObj.put("mailadress", emailList);
+
+            // add contact to list of objects
+            jsonContactsArray.add(jsonObj);
+        }
+
+        // Update JSon file
+        writeListInJsonFile(jsonContactsArray, filePath);
+
+    }
+
+    /**
+     * Update list of contacts with user updated
+     *
+     * @param name
+     * @param listcontact
+     * @return contact
+     * @author Benoit Mazzon, Laurent Botella
+     */
+    public ArrayList<Contactbook> removeContact(Contactbook userFind, ArrayList<Contactbook> listContacts) {
+
+        // Check name of contact and compare
+        ArrayList newList = new ArrayList<Contactbook>();
+        for (Contactbook contactbook : listContacts) {
+            System.out.println(contactbook.getName());
+            if (contactbook.getName().compareTo(userFind.getName()) != 0) {
+                newList.add(contactbook);
+            }
+        }
+
+        // return new list updated
+        return newList;
+    }
+
+    /**
+     * update json file
+     *
+     * @param list lsit of contacts or group
+     * @param filePath file to update
+     */
+    private void writeListInJsonFile(JSONArray list, String filePath) {
+
+        // Write new contact in the file
+        try (FileWriter file = new FileWriter("src/contactbook/" + filePath)) {
+            file.write(list.toJSONString());
+            file.flush();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 }
